@@ -1,7 +1,7 @@
 {{cookiecutter.description}}
 
 # Installation
-{% if cookiecutter.is_installable.lower() == 'false' -%}
+{% if not cookiecutter.is_installable -%}
 ```bash
 $ pip install -r requirements.txt
 ```
