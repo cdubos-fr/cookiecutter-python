@@ -1,10 +1,10 @@
 {
+    "python_version": "3.10",
     "full_name": "Clément Dubos",
     "email": "contact@cdubos.fr",
     "project_name": "a-simple-project-name",
     "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
     "description": "Project description",
     "version": "0.1.0",
-    "is_installable": false,
     "is_file_module": false
 }

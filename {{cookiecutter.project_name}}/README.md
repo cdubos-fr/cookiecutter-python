@@ -1,11 +1,7 @@
 {{cookiecutter.description}}
 
 # Installation
-{% if not cookiecutter.is_installable -%}
-```bash
-$ pip install -r requirements.txt
-```
-{% else %}
+
 ```bash
 $ pip install <path-to-this-project>
 ```
@@ -18,11 +14,10 @@ to install it in editable mode:
 ```bash
 $ pip install -e .
 ```
-{%- endif %}
 
 to add developpement dependencies:
 ```bash
-$ pip install -r requirements-dev.txt
+$ pip install -e ".[dev]"
 ```
 
 and use pre-commit to check your code

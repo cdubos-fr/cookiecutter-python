@@ -6,7 +6,7 @@ on:
 
 jobs:
   create-tags:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: {{ "${{ secrets.GITHUB_TOKEN }}" }}
     steps:
@@ -16,7 +16,7 @@ jobs:
       - name: Configure python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: {{cookiecutter.python_version}}
 
       - name: Install project dependencies
         run: pip install .
@@ -24,7 +24,7 @@ jobs:
       - id: release
         uses: cdubos-fr/tag-python-project@main
         with:
-          python-version: 3.9
+          python-version: {{cookiecutter.python_version}}
           python-module: "{{cookiecutter.project_slug}}"
         env:
           GITHUB_TOKEN: {{ "${{ secrets.GITHUB_TOKEN }}" }}
