@@ -21,13 +21,13 @@ jobs:
       - name: Build as file-module
         run: |
           cookiecutter --no-input . \
-            is_file_module=true \
+            is_file_module=True \
             project_name=as-file-module \
           && pip install -e "as-file-module[dev]"
 
       - name: Build as folder-module
         run: |
           cookiecutter --no-input . \
-            is_file_module=false \
+            is_file_module=False \
             project_name=as-folder-module \
           && pip install -e "as-folder-module[dev]"
