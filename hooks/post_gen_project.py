@@ -17,3 +17,5 @@ def clear_file_module():
 if __name__ == "__main__":
     if {{cookiecutter.is_file_module}}:
         clear_folder_module()
+    else:
+        clear_file_module()

@@ -1,8 +1,7 @@
 name: check-build
 on:
   push:
-    branches:
-    - main
+
 
 jobs:
   check-build:
@@ -21,14 +20,16 @@ jobs:
 
       - name: Build as file-module
         run: |
-          cookiecutter --no-input \
-            is_file_module=true \
-            project_name=as-file-module \
-          && pip install -e "as-file-module[dev]"
+          cookiecutter --no-input . \
+            is_file_module=True \
+            project_name=as-file-module
+      - name: Check Install
+        run: pip install -e "as-file-module[dev]"
 
       - name: Build as folder-module
         run: |
-          cookiecutter --no-input \
-            is_file_module=false \
-            project_name=as-folder-module \
-          && pip install -e "as-folder-module[dev]"
+          cookiecutter --no-input . \
+            is_file_module=False \
+            project_name=as-folder-module
+      - name: Check Install
+        run: pip install -e "as-folder-module[dev]"
