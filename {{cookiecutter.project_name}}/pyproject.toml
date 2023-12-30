@@ -7,8 +7,26 @@ name = "{{cookiecutter.project_name}}"
 authors = [{name = "{{cookiecutter.full_name}}", email = "{{cookiecutter.email}}"}]
 dynamic = ["version", "description"]
 readme = "README.md"
-requires-python = ">= 3.9"
+requires-python = ">= {{cookiecutter.python_version}}"
 dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "add-trailing-comma",
+    "autopep8",
+    "bandit",
+    "flake8",
+    "ipython",
+    "mypy",
+    "pre-commit",
+    "pytest",
+    "pytest-cov",
+    "pytest-lazy-fixture",
+    "pyupgrade",
+    "reorder-python-imports",
+    "tox",
+    "xenon",
+]
 
 [tool.flit.module]
 name = "{{cookiecutter.project_slug}}"

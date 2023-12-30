@@ -15,7 +15,7 @@ on:
 
 jobs:
   code-quality:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
 
@@ -26,7 +26,7 @@ jobs:
     - name: Configure python
       uses: actions/setup-python@v4
       with:
-        python-version: 3.9
+        python-version: {{cookiecutter.python_version}}
 
     - name: Install tox dependencies
       run: pip install tox-gh
