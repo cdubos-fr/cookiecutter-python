@@ -58,5 +58,3 @@ repos:
   rev: v3.13.0
   hooks:
     - id: commitizen
-    - id: commitizen-branch
-      stages: [push]

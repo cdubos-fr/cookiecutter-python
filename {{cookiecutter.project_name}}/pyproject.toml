@@ -26,6 +26,11 @@ dev = [
     "reorder-python-imports",
     "tox",
     "xenon",
+    "{{cookiecutter.project_name}}[docs]",
+]
+docs = [
+    "mkdocs",
+    "mkdocs-material"
 ]
 
 [tool.flit.module]
