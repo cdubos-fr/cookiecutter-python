@@ -33,5 +33,5 @@ $ pre-commit install
 # Setup environnement de dev'
 
 ```shell
-just dev-env
+just devenv
 ```

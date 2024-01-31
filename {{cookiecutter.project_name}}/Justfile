@@ -1,6 +1,6 @@
 set shell := ["zsh", "-uc"]
 
-dev-env:
+devenv:
     tox devenv -e devenv .venv
     pre-commit install
 
