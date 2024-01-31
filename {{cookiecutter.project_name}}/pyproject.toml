@@ -12,8 +12,6 @@ dependencies = []
 
 [project.optional-dependencies]
 dev = [
-    "add-trailing-comma",
-    "autopep8",
     "bandit",
     "flake8",
     "ipython",
@@ -26,6 +24,7 @@ dev = [
     "reorder-python-imports",
     "tox",
     "xenon",
+    "ruff",
     "{{cookiecutter.project_name}}[docs]",
 ]
 docs = [

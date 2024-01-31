@@ -1,0 +1,8 @@
+set shell := ["zsh", "-uc"]
+
+dev-env:
+    tox devenv -e devenv .venv
+    pre-commit install
+
+serve-docs:
+    mkdocs serve
