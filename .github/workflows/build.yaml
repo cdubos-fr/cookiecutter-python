@@ -6,6 +6,10 @@ on:
 jobs:
   check-build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+        is-file-module: ["False", "True"]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -13,23 +17,16 @@ jobs:
       - name: Configure python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: ${{matrix.python-version}}
 
       - name: Install project dependencies
         run: pip install cookiecutter
 
-      - name: Build as file-module
+      - name: Build
         run: |
           cookiecutter --no-input . \
-            is_file_module=True \
-            project_name=as-file-module
+            is_file_module=${{matrix.is-file-module}} \
+            project_name=a-module \
+            python_version=${{matrix.python-version}}
       - name: Check Install
-        run: pip install -e "as-file-module[dev]"
-
-      - name: Build as folder-module
-        run: |
-          cookiecutter --no-input . \
-            is_file_module=False \
-            project_name=as-folder-module
-      - name: Check Install
-        run: pip install -e "as-folder-module[dev]"
+        run: pip install -e "a-module[dev]"
