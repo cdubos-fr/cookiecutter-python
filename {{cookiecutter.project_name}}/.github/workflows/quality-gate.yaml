@@ -17,4 +17,4 @@ jobs:
   code-quality:
     uses: cdubos-fr/reusable-workflows/.github/workflows/python-ci.yml@v0
     with:
-      python-version: {{cookiecutter.python_version}}
+      python-version: "{{cookiecutter.python_version}}"

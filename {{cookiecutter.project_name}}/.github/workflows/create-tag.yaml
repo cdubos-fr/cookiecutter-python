@@ -6,9 +6,9 @@ on:
 
 jobs:
   create-tags:
-    uses: cdubos-fr/reusable-workflows/.github/workflows/python-tag.yml@v0
+    uses: cdubos-fr/reusable-workflows/.github/workflows/python-tag.yml@v0.1
     with:
-      python-version: {{cookiecutter.python_version}}
-      module-name: "{{cookiecutter.project_slug}}"
+      python-version: "{{cookiecutter.python_version}}"
+      python-module: "{{cookiecutter.project_slug}}"
     secrets:
       GH_TOKEN: {{ "${{ secrets.GITHUB_TOKEN }}" }}

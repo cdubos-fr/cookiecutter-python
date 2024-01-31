@@ -20,8 +20,6 @@ dev = [
     "pytest",
     "pytest-cov",
     "pytest-lazy-fixture",
-    "pyupgrade",
-    "reorder-python-imports",
     "tox",
     "xenon",
     "ruff",
