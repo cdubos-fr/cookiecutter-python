@@ -8,30 +8,38 @@
 # Installation
 
 ```bash
-$ pip install <path-to-this-project>
+pip install <path-to-this-project>
 ```
 or
 ```bash
-$ pip install git+<git-url>
+pip install git+<git-url>
 ```
 
 to install it in editable mode:
 ```bash
-$ pip install -e .
+pip install -e .
 ```
 
 to add developpement dependencies:
 ```bash
-$ pip install -e ".[dev]"
+pip install -e ".[dev]"
 ```
 
 and use pre-commit to check your code
 ```bash
-$ pre-commit install
+pre-commit install
 ```
 
-# Setup environnement de dev'
+# Setup dev' environment
 
-```shell
+If you want to setup virtualenv directly under the current path:
+```bash
 just devenv
 ```
+
+If you use [vagrant](https://developer.hashicorp.com/vagrant/docs), you can run:
+```bash
+vagrant up
+```
+
+[DevContainer](https://code.visualstudio.com/docs/devcontainers/containers) is also supported.

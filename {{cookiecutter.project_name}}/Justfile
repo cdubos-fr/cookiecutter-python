@@ -6,3 +6,9 @@ devenv:
 
 serve-docs:
     mkdocs serve
+
+clear:
+    rm -r .venv
+    rm -r .ruff_cache
+    rm -r .tox
+    rm -r .vagrant
