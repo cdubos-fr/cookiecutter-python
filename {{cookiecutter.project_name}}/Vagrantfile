@@ -1,6 +1,6 @@
 ENV['VAGRANT_DEFAULT_PROVIDER'] = 'docker'
 $USERNAME = "developer"
-$PROJECT = "{{cookiecutter.project-name}}"
+$PROJECT = "{{cookiecutter.project_name}}"
 
 Vagrant.configure("2") do |config|
   config.ssh.username = $USERNAME
