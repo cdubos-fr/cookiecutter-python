@@ -25,21 +25,7 @@ to add developpement dependencies:
 pip install -e ".[dev]"
 ```
 
-and use pre-commit to check your code
-```bash
-pre-commit install
-```
-
 # Setup dev' environment
 
-If you want to setup virtualenv directly under the current path:
-```bash
-just devenv
-```
-
-If you use [vagrant](https://developer.hashicorp.com/vagrant/docs), you can run:
-```bash
-vagrant up
-```
-
-[DevContainer](https://code.visualstudio.com/docs/devcontainers/containers) is also supported.
+Use [Nix](https://zero-to-nix.com/) with [direnv](https://github.com/nix-community/nix-direnv) to automatically build your development environment,
+or simply run `nix develop`.
