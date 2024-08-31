@@ -40,10 +40,14 @@
                         git
                         pre-commit
                         openssh
+                        # To build ruff
+                        rustc
+                        cargo
                     ];
                     shellHook = ''
-                       just devenv
-                       source .venv/bin/activate
+                        export PIP_NO_BINARY="ruff"
+                        just devenv
+                        source .venv/bin/activate
                     '';
                 };
             });
