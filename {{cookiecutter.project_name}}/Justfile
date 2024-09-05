@@ -4,9 +4,6 @@ devenv:
     tox devenv -e devenv .venv
     pre-commit install
 
-ci:
-    tox
-
 serve-docs:
     mkdocs serve
 
