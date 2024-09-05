@@ -3,6 +3,7 @@ name = "cz_conventional_commits"
 version = "0.1.0"
 version_files = [
     "cz.toml:version",
+    "flake.nix",
     {% if not cookiecutter.is_file_module -%}"{{cookiecutter.project_slug}}.py"{% else %}"{{cookiecutter.project_slug}}/__init__.py"{%- endif %}
 ]
 style = [
