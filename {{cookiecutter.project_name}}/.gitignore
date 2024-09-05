@@ -137,3 +137,5 @@ dmypy.json
 # direnv
 .direnv
 
+# Nix
+result

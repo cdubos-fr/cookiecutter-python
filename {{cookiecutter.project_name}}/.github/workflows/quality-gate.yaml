@@ -2,19 +2,19 @@ name: quality-gate
 on:
   push:
     branches:
-    - develop
     - main
-    - release
     tags:
     - "v*"
   pull_request:
     branches:
-    - develop
     - main
-    - release
 
 jobs:
   code-quality:
-    uses: cdubos-fr/reusable-workflows/.github/workflows/python-ci.yml@v0.1
-    with:
-      python-version: "{{cookiecutter.python_version}}"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: cachix/install-nix-action@v27
+
+    - name: Run test suite
+      run: nix develop .#ci --command tox

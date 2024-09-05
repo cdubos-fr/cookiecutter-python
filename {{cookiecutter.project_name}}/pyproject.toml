@@ -12,23 +12,23 @@ dependencies = []
 
 [project.optional-dependencies]
 dev = [
-    "bandit",
-    "flake8",
-    "ipython",
-    "mypy",
-    "pre-commit",
+    "{{cookiecutter.project_name}}[typing]",
+    "{{cookiecutter.project_name}}[tests]",
+    "{{cookiecutter.project_name}}[docs]",
+]
+typing = ["mypy"]
+tests = [
     "pytest",
     "pytest-cov",
     "pytest-lazy-fixture",
-    "tox",
-    "xenon",
-    "ruff",
-    "{{cookiecutter.project_name}}[docs]",
 ]
 docs = [
     "mkdocs",
-    "mkdocs-material"
+    "mkdocs-material",
 ]
 
 [tool.flit.module]
 name = "{{cookiecutter.project_slug}}"
+
+[tool.pdm]
+distribution = false

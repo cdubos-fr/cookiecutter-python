@@ -4,11 +4,24 @@ devenv:
     tox devenv -e devenv .venv
     pre-commit install
 
+ci:
+    tox
+
 serve-docs:
     mkdocs serve
 
-clear:
-    rm -r .venv
-    rm -r .ruff_cache
-    rm -r .tox
-    rm -r .vagrant
+clean:
+    find . -type d -name .venv -exec rm -rf {} +
+    find . -type d -name __pycache__ -exec rm -rf {} +
+    find . -type d -name .ruff_cache -exec rm -rf {} +
+    find . -type d -name dist -exec rm -rf {} +
+    find . -type d -name build -exec rm -rf {} +
+    find . -type d -name .pytest_cache -exec rm -rf {} +
+    find . -type d -name "*.egg-info" -exec rm -rf {} +
+    find . -type d -name .mypy_cache -exec rm -rf {} +
+    find . -type d -name .direnv -exec rm -rf {} +
+    find . -type d -name .tox -exec rm -rf {} +
+    find . -type d -name site -exec rm -rf {} +
+    find . -type f -name .coverage -exec rm -rf {} +
+    find . -type d -name result -exec rm -rf {} +
+    find . -type d -name __pycache__ -exec rm -rf {} +

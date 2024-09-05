@@ -1,55 +1,67 @@
 {
-    inputs = {
-        nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.2405.630312.tar.gz";
-    };
+  inputs = {
+    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.2405.630312.tar.gz";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+  };
 
-    # Flake outputs
-    outputs = { self, nixpkgs }:
+  # Flake outputs
+  outputs =
+    inputs@{ nixpkgs, flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "aarch64-darwin"
+      ];
+
+      perSystem =
+        { pkgs, system, ... }:
         let
-        # Systems supported
-        allSystems = [
-            "x86_64-linux" # 64-bit Intel/AMD Linux
-            "aarch64-linux" # 64-bit ARM Linux
-            "x86_64-darwin" # 64-bit Intel macOS
-            "aarch64-darwin" # 64-bit ARM macOS
-        ];
-
-        # Helper to provide system-specific attributes
-        forAllSystems = f: nixpkgs.lib.genAttrs allSystems (system: f {
-            pkgs = import nixpkgs { inherit system; };
-        });
+          pythonPackages = pkgs.python{{cookiecutter.python_version.replace('.', '')}}Packages;
+          python = pkgs.python{{cookiecutter.python_version.replace('.', '')}};
         in
         {
-            # Development environment output
-            devShells = forAllSystems ({ pkgs }: {
-                default =
-                let
-                    python = pkgs.python{{cookiecutter.python_version.replace('.', '')}};
-                in
-                pkgs.mkShell {
-                    # The Nix packages provided in the environment
-                    packages = with pkgs; [
-                        # Python plus helper tools
-                        (python.withPackages (ps: with ps; [
-                            virtualenv
-                            pip
-                            tox
-                            pdm
-                        ]))
-                        just
-                        git
-                        pre-commit
-                        openssh
-                        # To build ruff
-                        rustc
-                        cargo
-                    ];
-                    shellHook = ''
-                        export PIP_NO_BINARY="ruff"
-                        just devenv
-                        source .venv/bin/activate
-                    '';
-                };
-            });
+          packages.default = pythonPackages.buildPythonPackage rec {
+            pname = "{{cookiecutter.project_name}}";
+            pyproject = true;
+            version = "0.1.0";
+            src = ./.;
+            nativeBuildInputs = with pythonPackages; [ flit ];
+          };
+
+          devShells = {
+            default = pkgs.mkShell {
+              # The Nix packages provided in the environment
+              packages =
+                with import ./nix/dev.nix {
+                  pkgs = pkgs;
+                  python = python;
+                }; [
+                  dev-packages
+                ];
+              shellHook = ''
+                just devenv
+                source .venv/bin/activate
+              '';
+            };
+
+            ci = pkgs.mkShell {
+              # The Nix packages provided in the environment
+              packages =
+                with import ./nix/ci.nix {
+                  pkgs = pkgs;
+                  python = python;
+                }; [
+                  ci-packages
+                  python.withPackages (
+                    ps: with ps; [
+                      tox-gh
+                    ]
+                  )
+                ];
+            };
+          };
         };
+    };
 }
