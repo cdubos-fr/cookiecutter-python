@@ -54,7 +54,8 @@
                   python = python;
                 }; [
                   ci-packages
-                  python.withPackages (
+                  python.withPackages
+                  (
                     ps: with ps; [
                       tox-gh
                     ]
