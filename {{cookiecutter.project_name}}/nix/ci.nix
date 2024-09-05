@@ -1,18 +1,9 @@
 { pkgs, python, ... }:
 {
-  ci-packages = with pkgs; [
-    # To build nixfmt
-    cabal-install
-    ghc
+  # To build nixfmt
+  inherit (pkgs) cabal-install ghc;
 
-    # CI tools
-    ruff
-    pre-commit
-    commitizen
-    (python.withPackages (
-      ps: with ps; [
-        tox
-      ]
-    ))
-  ];
+  # CI tools
+  inherit (pkgs) ruff pre-commit commitizen;
+  pythonPackages = (python.withPackages (ps: [ ps.tox ]));
 }
