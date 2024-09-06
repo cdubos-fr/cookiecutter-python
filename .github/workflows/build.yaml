@@ -38,4 +38,4 @@ jobs:
         run: nix flake check --all-systems --impure path:./a-module --no-write-lock-file
 
       - name: Check project CI
-        run: nix develop path:./a-module#ci --command tox --root ./a-module -c ./a-module/tox.ini
+        run: nix develop path:./a-module#ci --impure --command tox --root ./a-module -c ./a-module/tox.ini
