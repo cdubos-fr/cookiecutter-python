@@ -2,11 +2,17 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    pyproject-nix.url = "github:nix-community/pyproject.nix";
+    pyproject-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  # Flake outputs
   outputs =
-    inputs@{ nixpkgs, flake-parts, ... }:
+    inputs@{
+      nixpkgs,
+      flake-parts,
+      pyproject-nix,
+      ...
+    }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [
         "x86_64-linux"
@@ -18,18 +24,18 @@
       perSystem =
         { pkgs, system, ... }:
         let
-          pythonPackages = pkgs.python{{cookiecutter.python_version.replace('.', '')}}Packages;
           python = pkgs.python{{cookiecutter.python_version.replace('.', '')}};
           getAttrsValue = name: value: value;
         in
         {
-          packages.default = pythonPackages.buildPythonPackage rec {
-            pname = "{{cookiecutter.project_name}}";
-            pyproject = true;
-            version = "0.1.0";
-            src = ./.;
-            nativeBuildInputs = with pythonPackages; [ flit ];
-          };
+          packages.default =
+            let
+              project = pyproject-nix.lib.project.loadPyproject {
+                projectRoot = ./.;
+              };
+              attrs = project.renderers.buildPythonPackage { inherit python; };
+            in
+            python.pkgs.buildPythonPackage attrs;
 
           devShells =
             let
@@ -40,6 +46,7 @@
             in
             {
               default = pkgs.mkShell {
+                name = "{{cookiecutter.project_name}}-dev-env";
                 # The Nix packages provided in the environment
                 packages = (pkgs.lib.attrsets.mapAttrsToList getAttrsValue dev-packages);
                 shellHook = ''
@@ -54,24 +61,19 @@
                     pkgs = pkgs;
                     python = python;
                   };
-                  tox-gh = pythonPackages.buildPythonPackage rec {
-                    pname = "tox-gh";
-                    version = "1.3.2";
-                    format = "pyproject";
-                    src = pkgs.fetchFromGitHub {
+                  tox-project = pyproject-nix.lib.project.loadPyproject {
+                    projectRoot = pkgs.fetchFromGitHub {
                       owner = "tox-dev";
                       repo = "tox-gh";
                       rev = "ea2191adcf8757d76dc4cee4039980859f39b01e";
                       sha256 = "sha256-uRNsTtc7Fr95fF1XvW/oz/qBQORpvCt/Lforpd6VZtk=";
                     };
-                    nativeBuildInputs = with pythonPackages; [
-                      hatchling
-                      hatch-vcs
-                    ];
-                    propagatedBuildInputs = [ ci-packages.pythonPackages ];
                   };
+                  tox-gh-attrs = tox-project.renderers.buildPythonPackage { inherit python; };
+                  tox-gh = python.pkgs.buildPythonPackage (tox-gh-attrs // { version = "1.3.2"; });
                 in
                 pkgs.mkShell {
+                  name = "{{cookiecutter.project_name}}-ci-env";
                   # The Nix packages provided in the environment
                   packages = (pkgs.lib.attrsets.mapAttrsToList getAttrsValue ci-packages) ++ [ tox-gh ];
                 };

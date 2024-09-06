@@ -1,18 +1,20 @@
-name: check-build
+name: Check template build
 on:
   push:
 
 
 jobs:
   check-build:
+    name: Check build
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: ["3.9", "3.10", "3.11", "3.12"]
         is-file-module: ["False", "True"]
     steps:
+      - uses: cachix/install-nix-action@v27
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Configure python
         uses: actions/setup-python@v4
@@ -28,5 +30,12 @@ jobs:
             is_file_module=${{matrix.is-file-module}} \
             project_name=a-module \
             python_version=${{matrix.python-version}}
+
       - name: Check Install
         run: pip install -e "a-module[dev]"
+
+      - name: Check Nix environments
+        run: nix flake check --all-systems a-module
+
+      - name: Check project CI
+        run: nix develop .#ci --command tox

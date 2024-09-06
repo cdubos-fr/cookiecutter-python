@@ -29,3 +29,11 @@ pip install -e ".[dev]"
 
 Use [Nix](https://zero-to-nix.com/) with [direnv](https://github.com/nix-community/nix-direnv) to automatically build your development environment,
 or simply run `nix develop`.
+
+# Use CI environment
+
+To use `CI` environment instead of development, you can execute `nix develop .#ci`
+
+# Build
+
+Use [Nix](https://zero-to-nix.com/) command: `nix build`

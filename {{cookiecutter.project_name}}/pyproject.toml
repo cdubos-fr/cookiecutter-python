@@ -4,8 +4,9 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "{{cookiecutter.project_name}}"
+description = "{{cookiecutter.description}}"
+version = "{{cookiecutter.version}}"
 authors = [{name = "{{cookiecutter.full_name}}", email = "{{cookiecutter.email}}"}]
-dynamic = ["version", "description"]
 readme = "README.md"
 requires-python = ">= {{cookiecutter.python_version}}"
 dependencies = []
