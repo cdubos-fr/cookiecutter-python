@@ -25,7 +25,7 @@ jobs:
       - name: Build
         run: |
           cookiecutter --no-input https://github.com/$GITHUB_REPOSITORY.git \
-            --checkout $GITHUB_REF_NAME
+            --checkout $GITHUB_REF_NAME \
             is_file_module=${{matrix.is-file-module}} \
             project_name=a-module \
             python_version=${{matrix.python-version}}
