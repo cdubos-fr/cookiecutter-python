@@ -37,7 +37,7 @@ jobs:
       - name: Check Nix environments
         run: |
           ls -la a-module
-          nix flake check --all-systems --impure ./a-module
+          nix flake check --all-systems --impure path:a-module
 
       - name: Check project CI
-        run: nix develop .#ci --command tox
+        run: nix develop path:a-module#ci --command tox --root ./a-module -c ./a-module/tox.ini
