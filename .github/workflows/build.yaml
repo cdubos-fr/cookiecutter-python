@@ -34,6 +34,9 @@ jobs:
       - name: Check Install
         run: pip install -e "a-module[dev]"
 
+      - name: Use created project as git
+        run: git config --system --add safe.directory 'a-module'
+
       - name: Check Nix environments
         run: nix flake check --all-systems --no-write-lock-file --impure path:./a-module
 
