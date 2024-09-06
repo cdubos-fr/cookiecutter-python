@@ -35,7 +35,9 @@ jobs:
         run: pip install -e "a-module[dev]"
 
       - name: Check Nix environments
-        run: nix flake check --all-systems --impure ./a-module
+        run: |
+          ls -la
+          nix flake check --all-systems --impure ./a-module
 
       - name: Check project CI
         run: nix develop .#ci --command tox
