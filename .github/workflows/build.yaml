@@ -35,7 +35,7 @@ jobs:
         run: pip install -e "a-module[dev]"
 
       - name: Check Nix environments
-        run: nix flake check --all-systems --impure path:./a-module --no-write-lock-file
+        run: nix flake check --all-systems --no-write-lock-file --impure path:./a-module
 
       - name: Check project CI
-        run: nix develop path:./a-module#ci --impure --command tox --root ./a-module -c ./a-module/tox.ini
+        run: nix develop path:./a-module#ci --no-write-lock-file --impure --command tox --root ./a-module -c ./a-module/tox.ini
