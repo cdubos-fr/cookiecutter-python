@@ -13,8 +13,6 @@ jobs:
         is-file-module: ["False", "True"]
     steps:
       - uses: cachix/install-nix-action@v27
-      - name: Checkout code
-        uses: actions/checkout@v4
 
       - name: Configure python
         uses: actions/setup-python@v4
@@ -26,7 +24,8 @@ jobs:
 
       - name: Build
         run: |
-          cookiecutter --no-input . \
+          cookiecutter --no-input https://github.com/$GITHUB_REPOSITORY.git \
+            --checkout $GITHUB_REF_NAME
             is_file_module=${{matrix.is-file-module}} \
             project_name=a-module \
             python_version=${{matrix.python-version}}
