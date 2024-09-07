@@ -1,6 +1,6 @@
 { pkgs, python, ... }:
 {
- inherit (pkgs)
+  inherit (pkgs)
     pdm
     just
     git
