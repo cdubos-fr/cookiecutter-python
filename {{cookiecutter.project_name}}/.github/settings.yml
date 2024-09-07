@@ -1,7 +1,7 @@
 repository:
-  name: {{ cookiecutter.project-name }}
+  name: {{ cookiecutter.project_name }}
   description: {{ cookiecutter.description }}
-  homepage: https://github.com/cdubos-fr/{{ cookiecutter.project-name }}
+  homepage: https://github.com/cdubos-fr/{{ cookiecutter.project_name }}
   topics: github, probot
   private: false
   has_issues: true
