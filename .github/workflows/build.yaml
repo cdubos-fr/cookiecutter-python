@@ -41,3 +41,6 @@ jobs:
 
       - name: Check project CI
         run: nix develop path:./a-module#ci --no-write-lock-file --impure --command tox --root ./a-module -c ./a-module/tox.ini
+
+      - name: Check development env
+        run: nix develop path:./a-module --no-write-lock-file --impure --command echo "🎉 Development environment OK"

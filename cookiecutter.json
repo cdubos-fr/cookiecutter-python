@@ -4,7 +4,7 @@
     "email": "contact@cdubos.fr",
     "project_name": "a-simple-project-name",
     "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
-    "description": "Project description",
+    "description": "Project description.",
     "version": "0.0.0",
     "is_file_module": false
 }
