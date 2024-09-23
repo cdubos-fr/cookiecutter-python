@@ -1,7 +1,10 @@
-{ pkgs, python, ... }:
+{
+  pkgs,
+  python,
+  pyproject,
+}:
 {
   inherit (pkgs)
-    pdm
     just
     git
     openssh
@@ -19,4 +22,6 @@
 // import ./ci.nix {
   pkgs = pkgs;
   python = python;
+  pyproject = pyproject;
+
 }

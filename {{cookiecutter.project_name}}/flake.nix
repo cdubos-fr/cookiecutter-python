@@ -26,11 +26,16 @@
         let
           python = pkgs.python{{cookiecutter.python_version.replace('.', '')}};
           getAttrsValue = name: value: value;
+          dev-packages = import ./nix/dev.nix {
+            pkgs = pkgs;
+            python = python;
+            pyproject = pyproject-nix;
+          };
         in
         {
           packages.default =
             let
-              project = pyproject-nix.lib.project.loadPyproject {
+              project = pyproject-nix.lib.project.loadPDMPyproject  {
                 projectRoot = ./.;
               };
               attrs = project.renderers.buildPythonPackage { inherit python; };
@@ -42,6 +47,7 @@
               dev-packages = import ./nix/dev.nix {
                 pkgs = pkgs;
                 python = python;
+                pyproject = pyproject-nix;
               };
             in
             {
@@ -60,6 +66,7 @@
                   ci-packages = import ./nix/ci.nix {
                     pkgs = pkgs;
                     python = python;
+                    pyproject = pyproject-nix;
                   };
                   tox-project = pyproject-nix.lib.project.loadPyproject {
                     projectRoot = pkgs.fetchFromGitHub {

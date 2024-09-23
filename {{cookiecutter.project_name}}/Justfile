@@ -22,3 +22,9 @@ clean:
     find . -type f -name .coverage -exec rm -rf {} +
     find . -type d -name result -exec rm -rf {} +
     find . -type d -name __pycache__ -exec rm -rf {} +
+
+lock:
+    pdm lock -G :all
+
+check:
+    tox
