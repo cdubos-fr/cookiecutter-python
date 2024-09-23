@@ -30,11 +30,11 @@ jobs:
             project_name=a-module \
             python_version=${{matrix.python-version}}
 
-      - name: Check Install
-        run: pip install -e "a-module[dev]"
-
       - name: Use created project as git
-        run: git init a-module
+        run: |
+          git init
+          git add .
+        working-directory: ./a-module
 
       - name: Check Nix environments
         run: nix flake check --all-systems --no-write-lock-file --impure path:./a-module

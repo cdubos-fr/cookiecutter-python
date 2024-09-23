@@ -33,9 +33,7 @@ distribution = true
 fix = true
 line-length = 100
 preview = true
-
-[tool.ruff.lint]
-select = [
+lint.select = [
     # pycodestyle
     "E",
     # Pyflakes
@@ -79,18 +77,20 @@ select = [
     # tryceratops
     "TRY",
 ]
-ignore = ["ANN101", "D203", "D212", "D213"]
-
-[tool.ruff.lint.per-file-ignores]
-"tests/**.py" = ["D", "S101"]
-
-[tool.ruff.lint.isort]
-force-single-line = true
-
-[tool.ruff.format]
-quote-style = "single"
-docstring-code-format = true
-preview = true
+lint.ignore = [
+    "ANN101",
+    "D203",
+    "D212",
+    "D213"
+]
+lint.per-file-ignores."tests/**.py" = [
+    "D",
+    "S101",
+]
+lint.isort.force-single-line = true
+format.quote-style = "single"
+format.docstring-code-format = true
+format.preview = true
 
 [tool.commitizen]
 name = "cz_conventional_commits"

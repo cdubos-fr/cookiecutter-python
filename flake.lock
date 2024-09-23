@@ -1,0 +1,149 @@
+{
+  "nodes": {
+    "flake-parts": {
+      "inputs": {
+        "nixpkgs-lib": "nixpkgs-lib"
+      },
+      "locked": {
+        "lastModified": 1726153070,
+        "narHash": "sha256-HO4zgY0ekfwO5bX0QH/3kJ/h4KvUDFZg8YpkNwIbg1U=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "bcef6817a8b2aa20a5a6dbb19b43e63c5bf8619a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "type": "github"
+      }
+    },
+    "mdbook-nixdoc": {
+      "inputs": {
+        "nix-github-actions": [
+          "pyproject-nix",
+          "nix-github-actions"
+        ],
+        "nixpkgs": [
+          "pyproject-nix",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1708395692,
+        "narHash": "sha256-smf0VmxGbjJDZqKvxxG3ZVqubgbVwAWG26wPo+BT/A0=",
+        "owner": "adisbladis",
+        "repo": "mdbook-nixdoc",
+        "rev": "d6a71b114b9221c0b4f20d31b81766d072cc26be",
+        "type": "github"
+      },
+      "original": {
+        "owner": "adisbladis",
+        "repo": "mdbook-nixdoc",
+        "type": "github"
+      }
+    },
+    "nix-github-actions": {
+      "inputs": {
+        "nixpkgs": [
+          "pyproject-nix",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1720066371,
+        "narHash": "sha256-uPlLYH2S0ACj0IcgaK9Lsf4spmJoGejR9DotXiXSBZQ=",
+        "owner": "nix-community",
+        "repo": "nix-github-actions",
+        "rev": "622f829f5fe69310a866c8a6cd07e747c44ef820",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nix-github-actions",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1726871744,
+        "narHash": "sha256-V5LpfdHyQkUF7RfOaDPrZDP+oqz88lTJrMT1+stXNwo=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "a1d92660c6b3b7c26fb883500a80ea9d33321be2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-lib": {
+      "locked": {
+        "lastModified": 1725233747,
+        "narHash": "sha256-Ss8QWLXdr2JCBPcYChJhz4xJm+h/xjl4G0c0XlP6a74=",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/356624c12086a18f2ea2825fed34523d60ccc4e3.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/356624c12086a18f2ea2825fed34523d60ccc4e3.tar.gz"
+      }
+    },
+    "pyproject-nix": {
+      "inputs": {
+        "mdbook-nixdoc": "mdbook-nixdoc",
+        "nix-github-actions": "nix-github-actions",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "treefmt-nix": "treefmt-nix"
+      },
+      "locked": {
+        "lastModified": 1726093189,
+        "narHash": "sha256-aPzd6M1k1H0C2zoMlSfAdTg4Za+WfB8Qj+OAbQAVAMs=",
+        "owner": "nix-community",
+        "repo": "pyproject.nix",
+        "rev": "6c56846759ba16382bc2bdbee42c2f56c21654be",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "pyproject.nix",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "flake-parts": "flake-parts",
+        "nixpkgs": "nixpkgs",
+        "pyproject-nix": "pyproject-nix"
+      }
+    },
+    "treefmt-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "pyproject-nix",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1724833132,
+        "narHash": "sha256-F4djBvyNRAXGusJiNYInqR6zIMI3rvlp6WiKwsRISos=",
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "rev": "3ffd842a5f50f435d3e603312eefa4790db46af5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
