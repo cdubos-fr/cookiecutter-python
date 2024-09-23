@@ -25,7 +25,7 @@ clean:
 
 pdm-lock-params := if path_exists("pdm.lock") == "true" { "sync" } else { "lock -G :all" }
 lock:
-    pdm {{ {{ pdm-lock-params }} }}
+    pdm {{ "{{ pdm-lock-params }}" }}
 
 check:
     tox

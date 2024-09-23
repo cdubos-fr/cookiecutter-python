@@ -36,6 +36,7 @@
                 packages = [
                   (python.withPackages (pp: [pp.cookiecutter]))
                   pkgs.just
+                  pkgs.git
                 ];
               };
             };
