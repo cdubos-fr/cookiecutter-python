@@ -39,6 +39,9 @@ jobs:
       - name: Check Nix environments
         run: nix flake check --all-systems --no-write-lock-file --impure path:./a-module
 
+      - name: Lock python deps
+        run: nix develop path:./a-module#ci --no-write-lock-file --impure --command just lock -f ./a-module/Justfile
+
       - name: Check project CI
         run: nix develop path:./a-module#ci --no-write-lock-file --impure --command tox --root ./a-module -c ./a-module/tox.ini
 

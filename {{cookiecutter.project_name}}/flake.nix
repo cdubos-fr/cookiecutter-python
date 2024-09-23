@@ -83,9 +83,6 @@
                   name = "{{cookiecutter.project_name}}-ci-env";
                   # The Nix packages provided in the environment
                   packages = (pkgs.lib.attrsets.mapAttrsToList getAttrsValue ci-packages) ++ [ tox-gh ];
-                  shellHook = ''
-                    just lock
-                  '';
                 };
             };
         };
