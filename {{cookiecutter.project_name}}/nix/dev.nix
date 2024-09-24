@@ -1,22 +1,22 @@
-{ pkgs, python, ... }:
+{
+  pkgs,
+  python,
+  pyproject,
+}:
 {
   inherit (pkgs)
-    pdm
     just
     git
     openssh
     ;
-  pythonPackages = (
-    python.withPackages (
-      ps: with ps; [
-        virtualenv
-        pip
-        ipython
-      ]
-    )
-  );
+  inherit (python.pkgs)
+    virtualenv
+    pip
+    ipython
+    ;
 }
 // import ./ci.nix {
   pkgs = pkgs;
   python = python;
+  pyproject = pyproject;
 }

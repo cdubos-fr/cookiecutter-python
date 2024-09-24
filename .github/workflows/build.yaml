@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.10", "3.11", "3.12"]
         is-file-module: ["False", "True"]
     steps:
       - uses: cachix/install-nix-action@v27
@@ -30,14 +30,18 @@ jobs:
             project_name=a-module \
             python_version=${{matrix.python-version}}
 
-      - name: Check Install
-        run: pip install -e "a-module[dev]"
-
-      - name: Use created project as git
-        run: git init a-module
-
       - name: Check Nix environments
-        run: nix flake check --all-systems --no-write-lock-file --impure path:./a-module
+        run: nix flake check --all-systems --no-write-lock-file --impure
+        working-directory: ./a-module
+
+      - name: Lock python deps
+        run: nix develop --no-write-lock-file --impure --command just --shell=bash lock
+        working-directory: ./a-module
 
       - name: Check project CI
-        run: nix develop path:./a-module#ci --no-write-lock-file --impure --command tox --root ./a-module -c ./a-module/tox.ini
+        run: nix develop .#ci --no-write-lock-file --impure --command tox
+        working-directory: ./a-module
+
+      - name: Check development env
+        run: nix develop --no-write-lock-file --impure --command echo "🎉 Development environment OK"
+        working-directory: ./a-module

@@ -19,3 +19,5 @@ if __name__ == "__main__":
         clear_folder_module()
     else:
         clear_file_module()
+    os.system(f"git init {CURRENT_PATH}")
+    os.system(f"git add {CURRENT_PATH}/*")
