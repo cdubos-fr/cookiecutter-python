@@ -30,12 +30,6 @@ jobs:
             project_name=a-module \
             python_version=${{matrix.python-version}}
 
-      - name: Use created project as git
-        run: |
-          git init
-          git add .
-        working-directory: ./a-module
-
       - name: Check Nix environments
         run: nix flake check --all-systems --no-write-lock-file --impure
         working-directory: ./a-module
