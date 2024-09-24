@@ -41,7 +41,7 @@ jobs:
         working-directory: ./a-module
 
       - name: Lock python deps
-        run: nix develop --no-write-lock-file --impure --command just lock
+        run: nix develop --no-write-lock-file --impure --command just --shell=bash lock
         working-directory: ./a-module
 
       - name: Check project CI
