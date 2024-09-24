@@ -35,7 +35,7 @@
         {
           packages.default =
             let
-              project = pyproject-nix.lib.project.loadPDMPyproject  {
+              project = pyproject-nix.lib.project.loadPDMPyproject {
                 projectRoot = ./.;
               };
               attrs = project.renderers.buildPythonPackage { inherit python; };
