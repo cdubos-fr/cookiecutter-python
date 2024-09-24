@@ -139,3 +139,6 @@ dmypy.json
 
 # Nix
 result
+
+# pdm
+.pdm-python
