@@ -37,13 +37,17 @@ jobs:
         working-directory: ./a-module
 
       - name: Check Nix environments
-        run: nix flake check --all-systems --no-write-lock-file --impure path:./a-module
+        run: nix flake check --all-systems --no-write-lock-file --impure
+        working-directory: ./a-module
 
       - name: Lock python deps
-        run: nix develop path:./a-module --no-write-lock-file --impure --command just lock -f ./a-module/Justfile
+        run: nix develop --no-write-lock-file --impure --command just lock
+        working-directory: ./a-module
 
       - name: Check project CI
-        run: nix develop path:./a-module#ci --no-write-lock-file --impure --command tox --root ./a-module -c ./a-module/tox.ini
+        run: nix develop .#ci --no-write-lock-file --impure --command tox
+        working-directory: ./a-module
 
       - name: Check development env
-        run: nix develop path:./a-module --no-write-lock-file --impure --command echo "🎉 Development environment OK"
+        run: nix develop --no-write-lock-file --impure --command echo "🎉 Development environment OK"
+        working-directory: ./a-module
