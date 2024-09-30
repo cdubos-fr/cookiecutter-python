@@ -11,7 +11,7 @@ readme = "README.md"
 requires-python = ">= {{cookiecutter.python_version}}"
 dependencies = []
 
-[project.optional-dependencies]
+[tool.pdm.dev-dependencies]
 typing = ["mypy"]
 tests = [
     "pytest",
