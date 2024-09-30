@@ -30,7 +30,6 @@ name = "{{cookiecutter.project_slug}}"
 distribution = true
 
 [tool.mypy]
-plugins = ["strawberry.ext.mypy_plugin","pydantic.mypy"]
 python_version = "3.12"
 warn_unused_configs = true
 warn_redundant_casts = true
