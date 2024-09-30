@@ -32,7 +32,14 @@ branches:
       required_status_checks:
         strict: true
         contexts: [
-          "Check build",
+          "Check build (3.9, False)",
+          "Check build (3.9, True)",
+          "Check build (3.10, False)",
+          "Check build (3.10, True)",
+          "Check build (3.11, False)",
+          "Check build (3.11, True)",
+          "Check build (3.12, False)",
+          "Check build (3.12, True)",
         ]
       enforce_admins: true
       required_linear_history: true
