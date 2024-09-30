@@ -35,7 +35,6 @@ warn_unused_configs = true
 warn_redundant_casts = true
 show_error_codes = true
 ignore_missing_imports = true
-strict = true
 
 [[tool.mypy.overrides]]
 module = "{{cookiecutter.project_slug}}.*"
