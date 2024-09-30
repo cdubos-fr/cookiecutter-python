@@ -29,6 +29,25 @@ name = "{{cookiecutter.project_slug}}"
 [tool.pdm]
 distribution = true
 
+[tool.mypy]
+plugins = ["strawberry.ext.mypy_plugin","pydantic.mypy"]
+python_version = "3.12"
+warn_unused_configs = true
+warn_redundant_casts = true
+show_error_codes = true
+ignore_missing_imports = true
+strict = true
+
+[[tool.mypy.overrides]]
+module = "{{cookiecutter.project_slug}}.*"
+disallow_any_generics = true
+disallow_subclassing_any = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+warn_unused_ignores = true
+no_implicit_reexport = true
+
 [tool.ruff]
 fix = true
 line-length = 100
