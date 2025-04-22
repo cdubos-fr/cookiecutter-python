@@ -1,8 +1,8 @@
-default_stages: ['commit']
+default_stages: ['pre-commit']
 default_install_hook_types: [pre-commit, commit-msg, pre-push]
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -14,12 +14,12 @@ repos:
       - id: requirements-txt-fixer
 
   - repo: https://github.com/NixOS/nixfmt
-    rev: master
+    rev: 2c611acc3a6ce6466fc6d13ea8b60e243686a526
     hooks:
       - id: nixfmt
 
   - repo: https://github.com/bwhmather/ssort
-    rev: 0.13.0
+    rev: 0.14.0
     hooks:
       - id: ssort
 
@@ -39,8 +39,8 @@ repos:
         require_serial: true
 
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v3.29.0
+    rev: v4.6.0
     hooks:
       - id: commitizen
       - id: commitizen-branch
-        stages: [push]
+        stages: [pre-push]
