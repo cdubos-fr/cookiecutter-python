@@ -1,31 +1,76 @@
 set shell := ["zsh", "-uc"]
 
+default:
+    @just --list
+
 devenv: lock
-    tox devenv -e devenv .venv
-    pre-commit install
+    @echo "Setting up development environment"
+    @tox devenv -e devenv .venv
+    # Verify packages were installed
+    @if [ -f .venv/bin/activate ]; then \
+        echo "Activating virtual environment";
+    else \
+        echo "Error: Virtual environment not created properly"; \
+        exit 1; \
+    fi
+    @pre-commit install
+    @echo "✓ Development environment ready"
+
+# Run all checks
+check:
+    tox
+
+# Run tests
+test:
+    @tox -e tests
+
+# Run type checking
+typecheck:
+    @tox -e typing
+
+# Format code
+format:
+    @pre-commit run ruff-format --all-files
+
+# Lint code
+lint:
+    @pre-commit run ruff --all-files
+
+docs:
+    @tox -e docs
 
 serve-docs:
     mkdocs serve
 
 clean:
-    find . -type d -name .venv -exec rm -rf {} +
-    find . -type d -name __pycache__ -exec rm -rf {} +
-    find . -type d -name .ruff_cache -exec rm -rf {} +
-    find . -type d -name dist -exec rm -rf {} +
-    find . -type d -name build -exec rm -rf {} +
-    find . -type d -name .pytest_cache -exec rm -rf {} +
-    find . -type d -name "*.egg-info" -exec rm -rf {} +
-    find . -type d -name .mypy_cache -exec rm -rf {} +
-    find . -type d -name .direnv -exec rm -rf {} +
-    find . -type d -name .tox -exec rm -rf {} +
-    find . -type d -name site -exec rm -rf {} +
-    find . -type f -name .coverage -exec rm -rf {} +
-    find . -type d -name result -exec rm -rf {} +
-    find . -type d -name __pycache__ -exec rm -rf {} +
+    @find . -type d -name .venv -exec rm -rf {} +
+    @find . -type d -name __pycache__ -exec rm -rf {} +
+    @find . -type d -name .ruff_cache -exec rm -rf {} +
+    @find . -type d -name dist -exec rm -rf {} +
+    @find . -type d -name build -exec rm -rf {} +
+    @find . -type d -name .pytest_cache -exec rm -rf {} +
+    @find . -type d -name "*.egg-info" -exec rm -rf {} +
+    @find . -type d -name .mypy_cache -exec rm -rf {} +
+    @find . -type d -name .direnv -exec rm -rf {} +
+    @find . -type d -name .tox -exec rm -rf {} +
+    @find . -type d -name site -exec rm -rf {} +
+    @find . -type f -name .coverage -exec rm -rf {} +
+    @find . -type d -name result -exec rm -rf {} +
+    @find . -type d -name __pycache__ -exec rm -rf {} +
 
 pdm-lock-params := if path_exists("pdm.lock") == "true" { "sync" } else { "lock -G :all" }
 lock:
-    pdm {{ "{{ pdm-lock-params }}" }}
+    @pdm {{ "{{ pdm-lock-params }}" }}
 
-check:
-    tox
+# Build package
+build:
+    @pdm build
+
+# Update dependencies
+update:
+    @pdm update
+
+# Release a new version
+release version:
+    @cz bump
+    @just build

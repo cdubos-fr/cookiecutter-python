@@ -13,11 +13,7 @@ dependencies = []
 
 [tool.pdm.dev-dependencies]
 typing = ["mypy"]
-tests = [
-    "pytest",
-    "pytest-cov",
-    "pytest-lazy-fixture",
-]
+tests = ["pytest", "pytest-cov", "pytest-lazy-fixture"]
 docs = [
     "mkdocs",
     "mkdocs-material",
