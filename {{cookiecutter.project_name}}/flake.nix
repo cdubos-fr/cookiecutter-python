@@ -32,10 +32,10 @@
 
           # Load all packages
           packages = import ./nix/packages.nix {
-            pkgs=pkgs;
-            python=python;
-            pyproject=pyproject-nix;
-            lib=lib;
+            pkgs = pkgs;
+            python = python;
+            pyproject = pyproject-nix;
+            lib = lib;
           };
 
           # Build the Python package
