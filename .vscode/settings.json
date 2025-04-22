@@ -1,0 +1,24 @@
+{
+    "python.linting.enabled": true,
+    "python.linting.mypyEnabled": true,
+    "python.linting.flake8Enabled": false,
+    "python.linting.ruffEnabled": true,
+    "editor.formatOnSave": true,
+    "python.formatting.provider": "ruff",
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.nosetestsEnabled": false,
+    "[python]": {
+      "editor.codeActionsOnSave": {
+        "source.organizeImports": true,
+        "source.fixAll": true
+      }
+    },
+    "nix.enableLanguageServer": true,
+    "terminal.integrated.profiles.linux": {
+      "nix-develop": {
+        "path": "bash",
+        "args": ["-c", "nix develop --command bash"]
+      }
+    }
+  }
