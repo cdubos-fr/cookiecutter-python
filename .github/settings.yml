@@ -36,7 +36,7 @@ branches:
           "Check build (3.11, True)",
           "Check build (3.12, False)",
           "Check build (3.12, True)",
-          "Check build (3.13", False)",
+          "Check build (3.13, False)",
           "Check build (3.13, True)",
         ]
       enforce_admins: true
