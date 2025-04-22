@@ -30,7 +30,7 @@ name = "{{cookiecutter.project_slug}}"
 distribution = true
 
 [tool.mypy]
-python_version = "3.12"
+python_version = "{{cookiecutter.python_version}}"
 warn_unused_configs = true
 warn_redundant_casts = true
 show_error_codes = true
