@@ -6,13 +6,8 @@ default:
 devenv: lock
     @echo "Setting up development environment"
     @tox devenv -e devenv .venv
-    # Verify packages were installed
-    @if [ -f .venv/bin/activate ]; then \
-        echo "Activating virtual environment";
-    else \
-        echo "Error: Virtual environment not created properly"; \
-        exit 1; \
-    fi
+    @echo "Activating virtual environment"
+    @source .venv/bin/activate
     @pre-commit install
     @echo "✓ Development environment ready"
 

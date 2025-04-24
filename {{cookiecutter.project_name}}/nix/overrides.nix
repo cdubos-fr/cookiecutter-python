@@ -3,7 +3,7 @@
 
 {
   # Disable commitizen if it's causing issues
-  commitizen = null;
+  # commitizen = null;
 
   # Example: replace a package with a working version or placeholder
   # black = pkgs.writeShellScriptBin "black" ''
