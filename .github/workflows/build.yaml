@@ -1,47 +1,37 @@
-name: Check template build
+name: Template generation self-check
 on:
   push:
-
+  pull_request:
 
 jobs:
-  check-build:
-    name: Check build
+  generate-and-test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: ["3.11", "3.12", "3.13"]
         is-file-module: ["False", "True"]
     steps:
-      - uses: cachix/install-nix-action@v27
-
-      - name: Configure python
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          python-version: ${{matrix.python-version}}
-
-      - name: Install project dependencies
-        run: pip install cookiecutter
-
-      - name: Build
+          python-version: ${{ matrix.python-version }}
+      - name: Install cookiecutter
+        run: pip install cookiecutter tox tox-pdm
+      - name: Generate project from template
         run: |
-          cookiecutter --no-input https://github.com/$GITHUB_REPOSITORY.git \
-            --checkout $GITHUB_REF_NAME \
-            is_file_module=${{matrix.is-file-module}} \
+          cookiecutter --no-input $GITHUB_WORKSPACE \
+            is_file_module=${{ matrix.is-file-module }} \
             project_name=a-module \
-            python_version=${{matrix.python-version}}
-
-      - name: Check Nix environments
-        run: nix flake check --all-systems --no-write-lock-file --impure
+            python_version=${{ matrix.python-version }}
+      - name: Run tox environments (tests, typing, docs)
         working-directory: ./a-module
-
-      - name: Lock python deps
-        run: nix develop --no-write-lock-file --impure --command just --shell=bash lock
+        run: tox -e tests -e typing -e docs
+      - name: Build package
         working-directory: ./a-module
-
-      - name: Check project CI
-        run: nix develop .#ci --no-write-lock-file --impure --command tox
-        working-directory: ./a-module
-
-      - name: Check development env
-        run: nix develop --no-write-lock-file --impure --command echo "🎉 Development environment OK"
-        working-directory: ./a-module
+        run: python -m build
+      - name: Artifact dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-${{ matrix.python-version }}-${{ matrix.is-file-module }}
+          path: a-module/dist/

@@ -25,15 +25,44 @@ to add developpement dependencies:
 pip install -e ".[dev]"
 ```
 
-# Setup dev' environment
+# Setup dev environment
 
-Use [Nix](https://zero-to-nix.com/) with [direnv](https://github.com/nix-community/nix-direnv) to automatically build your development environment,
-or simply run `nix develop`.
+Create & activate a virtualenv and install grouped optional dependencies:
 
-# Use CI environment
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+pip install -e .[dev,typing,tests,docs]
+pre-commit install
+```
 
-To use `CI` environment instead of development, you can execute `nix develop .#ci`
+Alternatively you can use the Just recipe:
 
-# Build
+```bash
+just devenv
+```
 
-Use [Nix](https://zero-to-nix.com/) command: `nix build`
+# Build (sdist & wheel)
+
+```bash
+python -m build
+```
+
+# Run tests
+
+```bash
+pytest
+```
+
+# Type checking
+
+```bash
+mypy -p {{cookiecutter.project_slug}}
+```
+
+# Docs
+
+```bash
+mkdocs build
+```
