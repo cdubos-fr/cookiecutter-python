@@ -1,3 +1,4 @@
+{% raw %}
 name: CI -> Tests, Lint, Types, Security
 on:
   push:
@@ -167,3 +168,4 @@ jobs:
         with:
           name: dist
           path: dist/
+{% endraw %}

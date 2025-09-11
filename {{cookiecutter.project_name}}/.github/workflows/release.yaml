@@ -1,3 +1,4 @@
+{% raw %}
 name: CD -> Bump version and create release
 
 on:
@@ -18,7 +19,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: {{ "${{ secrets.GITHUB_TOKEN }}" }}
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -28,7 +29,7 @@ jobs:
       - name: Version bump & changelog
         uses: commitizen-tools/commitizen-action@0.21.0
         with:
-          github_token: {{ "${{ secrets.GITHUB_TOKEN }}" }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           changelog_increment_filename: body.md
       - name: Build sdist & wheel
         run: python -m build
@@ -41,7 +42,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           body_path: body.md
-          tag_name: {{ "${{ env.REVISION }}" }}
+          tag_name: ${{ env.REVISION }}
           files: dist/*
         env:
-          GITHUB_TOKEN: {{ "${{ secrets.GITHUB_TOKEN }}" }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+{% endraw %}
