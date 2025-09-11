@@ -1,3 +1,4 @@
+{% raw %}
 name: CD -> Bump version and create release
 
 on:
@@ -14,26 +15,35 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: cachix/install-nix-action@v27
-      - name: Check out
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: {{ "${{ secrets.GITHUB_TOKEN }}" }}
-      - name: Create bump and changelog
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install build tooling
+        run: pip install commitizen build twine
+      - name: Version bump & changelog
         uses: commitizen-tools/commitizen-action@0.21.0
         with:
-          github_token: {{ "${{ secrets.GITHUB_TOKEN }}" }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           changelog_increment_filename: body.md
-      - name: Build
-        run: |
-          nix build
-          zip -r result.zip result
-      - name: Release
+      - name: Build sdist & wheel
+        run: python -m build
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          body_path: "body.md"
-          tag_name: {{ "${{ env.REVISION }}" }}
-          files: result.zip
+          body_path: body.md
+          tag_name: ${{ env.REVISION }}
+          files: dist/*
         env:
-          GITHUB_TOKEN: {{ "${{ secrets.GITHUB_TOKEN }}" }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+{% endraw %}
