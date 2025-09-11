@@ -27,6 +27,9 @@ jobs:
       - name: Run tox environments (tests, typing, docs)
         working-directory: ./a-module
         run: tox -e tests -e typing -e docs
+      - name: Install build tool
+        working-directory: ./a-module
+        run: pip install build
       - name: Build package
         working-directory: ./a-module
         run: python -m build
