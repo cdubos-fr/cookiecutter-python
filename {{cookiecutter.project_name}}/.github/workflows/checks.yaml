@@ -25,6 +25,8 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: pip
           cache-dependency-path: pyproject.toml
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v1
       - name: Cache uv
         uses: actions/cache@v4
         with:
@@ -41,7 +43,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-tox-${{ matrix.python-version }}-
             ${{ runner.os }}-tox-
-      - run: pip install tox tox-uv uv tox-gh
+      - run: pip install tox tox-uv tox-gh
       - name: Run tox via tox-gh
         run: tox-gh --skip "build" --parallel
 
@@ -55,9 +57,11 @@ jobs:
           python-version: "3.13"
           cache: pip
           cache-dependency-path: pyproject.toml
-      - run: pip install build
-      - name: Build sdist & wheel
-        run: python -m build
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v1
+      - run: pip install tox tox-uv
+      - name: Build sdist & wheel (tox)
+        run: tox -e build
       - name: Store artifacts
         uses: actions/upload-artifact@v4
         with:

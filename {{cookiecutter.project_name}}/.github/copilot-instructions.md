@@ -40,3 +40,6 @@ Projet Python packagé avec Flit, orchestré par tox + tox-uv, environnement loc
 Adaptez les suggestions aux conventions établies (dependency-groups, tox-uv, pre-commit). Conservez la cohérence Ruff/mypy et évitez les régressions de couverture (<80%).
 
 Note commits: utiliser le format Conventional Commits (feat, fix, chore, ci, docs, refactor, test, build, etc.). Commitizen est configuré (`cz bump`, hook commit disponible) pour guider et gérer le versioning sémantique.
+
+## Conventions de code
+- Python: indentation par espaces uniquement (4 espaces), jamais d’onglets. Respecter PEP 8 et les règles Ruff configurées dans `pyproject.toml`.
