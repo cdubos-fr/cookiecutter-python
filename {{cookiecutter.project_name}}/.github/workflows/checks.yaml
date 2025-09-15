@@ -27,6 +27,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-${{ matrix.python-version }}-
             ${{ runner.os }}-pip-
+      - name: Cache uv
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/uv
+          key: ${{ runner.os }}-uv-${{ matrix.python-version }}-${{ hashFiles('**/pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-uv-${{ matrix.python-version }}-
+            ${{ runner.os }}-uv-
       - name: Cache tox env
         uses: actions/cache@v4
         with:
@@ -35,8 +43,8 @@ jobs:
             restore-keys: |
               ${{ runner.os }}-tox-${{ matrix.python-version }}-
               ${{ runner.os }}-tox-
-      - name: Install tox
-        run: pip install tox tox-pdm
+      - name: Install tox + uv
+        run: pip install tox tox-uv uv
       - name: Run tests
         run: tox -e tests
 
@@ -55,6 +63,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-3.13-
             ${{ runner.os }}-pip-
+      - name: Cache uv
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/uv
+          key: ${{ runner.os }}-uv-3.13-${{ hashFiles('**/pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-uv-3.13-
+            ${{ runner.os }}-uv-
       - name: Cache tox env
         uses: actions/cache@v4
         with:
@@ -63,7 +79,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-tox-3.13-
             ${{ runner.os }}-tox-
-      - run: pip install tox tox-pdm
+  - run: pip install tox tox-uv uv
       - run: tox -e typing
 
   lint:
@@ -81,6 +97,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-3.13-
             ${{ runner.os }}-pip-
+      - name: Cache uv
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/uv
+          key: ${{ runner.os }}-uv-3.13-${{ hashFiles('**/pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-uv-3.13-
+            ${{ runner.os }}-uv-
       - name: Cache tox env
         uses: actions/cache@v4
         with:
@@ -89,7 +113,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-tox-3.13-
             ${{ runner.os }}-tox-
-      - run: pip install tox tox-pdm
+  - run: pip install tox tox-uv uv
       - run: tox -e precommit
 
   docs:
@@ -107,6 +131,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-3.13-
             ${{ runner.os }}-pip-
+      - name: Cache uv
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/uv
+          key: ${{ runner.os }}-uv-3.13-${{ hashFiles('**/pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-uv-3.13-
+            ${{ runner.os }}-uv-
       - name: Cache tox env
         uses: actions/cache@v4
         with:
@@ -115,7 +147,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-tox-3.13-
             ${{ runner.os }}-tox-
-      - run: pip install tox tox-pdm
+  - run: pip install tox tox-uv uv
       - run: tox -e docs
 
   security:
@@ -133,6 +165,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-3.13-
             ${{ runner.os }}-pip-
+      - name: Cache uv
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/uv
+          key: ${{ runner.os }}-uv-3.13-${{ hashFiles('**/pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-uv-3.13-
+            ${{ runner.os }}-uv-
       - name: Cache tox env
         uses: actions/cache@v4
         with:
@@ -141,7 +181,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-tox-3.13-
             ${{ runner.os }}-tox-
-      - run: pip install tox tox-pdm
+  - run: pip install tox tox-uv uv
       - run: tox -e security
 
   build:
