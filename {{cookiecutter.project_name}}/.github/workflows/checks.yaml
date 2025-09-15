@@ -7,26 +7,24 @@ on:
   pull_request:
     branches: [ main ]
 
+concurrency:
+  group: ci-${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
 jobs:
-  tests:
+  tox:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         python-version: ["3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/pyproject.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-${{ matrix.python-version }}-
-            ${{ runner.os }}-pip-
+          cache: pip
+          cache-dependency-path: pyproject.toml
       - name: Cache uv
         uses: actions/cache@v4
         with:
@@ -38,168 +36,25 @@ jobs:
       - name: Cache tox env
         uses: actions/cache@v4
         with:
-            path: .tox
-            key: ${{ runner.os }}-tox-${{ matrix.python-version }}-${{ hashFiles('**/pyproject.toml','**/tox.ini') }}
-            restore-keys: |
-              ${{ runner.os }}-tox-${{ matrix.python-version }}-
-              ${{ runner.os }}-tox-
-      - name: Install tox + uv
-        run: pip install tox tox-uv uv
-      - name: Run tests
-        run: tox -e tests
-
-  typing:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.13"
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-3.13-${{ hashFiles('**/pyproject.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-3.13-
-            ${{ runner.os }}-pip-
-      - name: Cache uv
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/uv
-          key: ${{ runner.os }}-uv-3.13-${{ hashFiles('**/pyproject.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-uv-3.13-
-            ${{ runner.os }}-uv-
-      - name: Cache tox env
-        uses: actions/cache@v4
-        with:
           path: .tox
-          key: ${{ runner.os }}-tox-3.13-${{ hashFiles('**/pyproject.toml','**/tox.ini') }}
+          key: ${{ runner.os }}-tox-${{ matrix.python-version }}-${{ hashFiles('**/pyproject.toml','**/tox.ini') }}
           restore-keys: |
-            ${{ runner.os }}-tox-3.13-
+            ${{ runner.os }}-tox-${{ matrix.python-version }}-
             ${{ runner.os }}-tox-
-  - run: pip install tox tox-uv uv
-      - run: tox -e typing
-
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.13"
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-3.13-${{ hashFiles('**/pyproject.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-3.13-
-            ${{ runner.os }}-pip-
-      - name: Cache uv
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/uv
-          key: ${{ runner.os }}-uv-3.13-${{ hashFiles('**/pyproject.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-uv-3.13-
-            ${{ runner.os }}-uv-
-      - name: Cache tox env
-        uses: actions/cache@v4
-        with:
-          path: .tox
-          key: ${{ runner.os }}-tox-3.13-${{ hashFiles('**/pyproject.toml','**/tox.ini') }}
-          restore-keys: |
-            ${{ runner.os }}-tox-3.13-
-            ${{ runner.os }}-tox-
-  - run: pip install tox tox-uv uv
-      - run: tox -e precommit
-
-  docs:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.13"
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-3.13-${{ hashFiles('**/pyproject.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-3.13-
-            ${{ runner.os }}-pip-
-      - name: Cache uv
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/uv
-          key: ${{ runner.os }}-uv-3.13-${{ hashFiles('**/pyproject.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-uv-3.13-
-            ${{ runner.os }}-uv-
-      - name: Cache tox env
-        uses: actions/cache@v4
-        with:
-          path: .tox
-          key: ${{ runner.os }}-tox-3.13-${{ hashFiles('**/pyproject.toml','**/tox.ini') }}
-          restore-keys: |
-            ${{ runner.os }}-tox-3.13-
-            ${{ runner.os }}-tox-
-  - run: pip install tox tox-uv uv
-      - run: tox -e docs
-
-  security:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.13"
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-3.13-${{ hashFiles('**/pyproject.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-3.13-
-            ${{ runner.os }}-pip-
-      - name: Cache uv
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/uv
-          key: ${{ runner.os }}-uv-3.13-${{ hashFiles('**/pyproject.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-uv-3.13-
-            ${{ runner.os }}-uv-
-      - name: Cache tox env
-        uses: actions/cache@v4
-        with:
-          path: .tox
-          key: ${{ runner.os }}-tox-3.13-${{ hashFiles('**/pyproject.toml','**/tox.ini') }}
-          restore-keys: |
-            ${{ runner.os }}-tox-3.13-
-            ${{ runner.os }}-tox-
-  - run: pip install tox tox-uv uv
-      - run: tox -e security
+      - run: pip install tox tox-uv uv tox-gh
+      - name: Run tox via tox-gh
+        run: tox-gh --skip "build" --parallel
 
   build:
     runs-on: ubuntu-latest
-    needs: [tests, typing, lint]
+    needs: tox
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-3.13-${{ hashFiles('**/pyproject.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-3.13-
-            ${{ runner.os }}-pip-
+          cache: pip
+          cache-dependency-path: pyproject.toml
       - run: pip install build
       - name: Build sdist & wheel
         run: python -m build

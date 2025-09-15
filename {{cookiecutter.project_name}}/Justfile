@@ -15,7 +15,7 @@ check:
 
 # Run tests
 test:
-    @tox -e tests {posargs}
+    @tox -e tests
 
 # Run type checking
 typecheck:
@@ -54,11 +54,11 @@ build:
 
 update-deps:
     @echo "Recreating dev environment with tox-uv (fresh deps)"
-    @tox --recreate --devenv .venv -e devenv
+    @tox --recreate devenv -e devenv .venv
 
 sync:
     @echo "Syncing dev environment with tox-uv"
-    @tox --devenv .venv -e devenv
+    @tox devenv -e devenv .venv
 
 release version:
     @cz bump
