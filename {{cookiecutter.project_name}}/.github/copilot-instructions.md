@@ -38,3 +38,5 @@ Projet Python packagé avec Flit, orchestré par tox + tox-uv, environnement loc
 - `mkdocs.yml` et `docs/`.
 
 Adaptez les suggestions aux conventions établies (dependency-groups, tox-uv, pre-commit). Conservez la cohérence Ruff/mypy et évitez les régressions de couverture (<80%).
+
+Note commits: utiliser le format Conventional Commits (feat, fix, chore, ci, docs, refactor, test, build, etc.). Commitizen est configuré (`cz bump`, hook commit disponible) pour guider et gérer le versioning sémantique.

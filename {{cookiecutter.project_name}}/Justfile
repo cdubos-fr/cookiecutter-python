@@ -5,7 +5,7 @@ default:
 
 devenv:
     @echo "Setting up development environment with tox-uv (.venv)"
-    @tox devenv -e devenv .venv
+    @tox --devenv .venv -e devenv
     @source .venv/bin/activate; pre-commit install || true
     @echo "✓ Development environment ready"
 
@@ -50,7 +50,7 @@ clean:
     @find . -type d -name result -exec rm -rf {} +
 
 build:
-    @python -m build
+    @tox -e build
 
 update-deps:
     @echo "Recreating dev environment with tox-uv (fresh deps)"
