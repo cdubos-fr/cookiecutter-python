@@ -1,6 +1,6 @@
 repository:
   name: cookiecutter-python
-  description: Cookiecutter Python template (tox + tox-pdm, ruff, mypy, pytest, mkdocs) sans Nix
+  description: Cookiecutter Python template (tox + tox-uv, ruff, mypy, pytest, mkdocs) sans Nix
   homepage: https://github.com/cdubos-fr/cookiecutter-python
   topics: github, probot
   private: false

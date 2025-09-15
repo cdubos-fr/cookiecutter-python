@@ -1,7 +1,7 @@
 # Instructions pour les agents IA sur ce projet cookiecutter-python
 
 ## Vue d'ensemble
-Template Cookiecutter pour projets Python simples (sans Nix) avec : packaging Flit, tox + tox-pdm, virtualenv, dependency-groups (PDM style), lint/format (Ruff), types (mypy), tests (pytest+cov), docs (MkDocs) et automatisations via Justfile.
+Template Cookiecutter pour projets Python simples (sans Nix) avec : packaging Flit, tox + tox-uv, virtualenv, dependency-groups (PDM style), lint/format (Ruff), types (mypy), tests (pytest+cov), docs (MkDocs) et automatisations via Justfile.
 
 ## Structure principale
 - `{{cookiecutter.project_name}}/` : Racine du projet généré
@@ -13,7 +13,7 @@ Template Cookiecutter pour projets Python simples (sans Nix) avec : packaging Fl
 - `hooks/` : Scripts Cookiecutter post-génération
 
 ## Workflows critiques
-- Environnement de dev : `just devenv` crée `.venv`, installe `.[dev,typing,tests,docs]`, active pre-commit.
+- Environnement de dev : `just devenv` crée `.venv` via `uv venv`, installe `.[dev,typing,tests,docs,security]` via `uv pip`, active pre-commit.
 - Tests rapides : `pytest` ou `tox -e tests` (couverture avec seuil 80% + `--cov-report=term-missing`).
 - Lint/format : `pre-commit run ruff --all-files` et `pre-commit run ruff-format --all-files` (Ruff gère import, style et docstrings; ignore pydocstyle dans `tests/`).
 - Typage : `tox -e typing` (exécute mypy sur package + tests, options strictes via override dans `[tool.mypy]`).
@@ -23,12 +23,12 @@ Template Cookiecutter pour projets Python simples (sans Nix) avec : packaging Fl
 - Vérification globale CI locale : `just check` (alias `tox`).
 
 ## Conventions spécifiques
-- Regroupement des dépendances via `[dependency-groups]` : `dev`, `typing`, `tests`, `docs`, `security` (consommés par tox-pdm via `dependency_groups =`).
-- `tox` + `tox-pdm` synchronisent les groupes (ex: `[testenv:typing]` déclare `dependency_groups = typing`).
+- Regroupement des dépendances via `[dependency-groups]` : `dev`, `typing`, `tests`, `docs`, `security` (consommés par tox-uv via `dependency_groups =`).
+- `tox` + `tox-uv` synchronisent les groupes (ex: `[testenv:typing]` déclare `dependency_groups = typing`).
 - `__version__` exposé dans le package pour tests PEP 440 (`test_packaging_attribute.py`).
 - Ruff configuré avec sélections multiples (E,F,W,C90,I,N,D,UP,B,ANN,...) et ignore ciblé (`ANN101`, docstring style). Tests exclus des règles doc & `S101`.
 - Mypy : mode strict appliqué aux modules du package (overrides) avec `disallow_untyped_defs` etc.
-- Pas de Nix : ne pas réintroduire de dépendances spécifiques (remplacé par virtualenv + tox-pdm).
+- Pas de Nix : ne pas réintroduire de dépendances spécifiques (remplacé par virtualenv + tox-uv).
 - Utiliser `.venv` local activé explicitement (pas de gestion automatique).
 
 ## Points d'intégration
@@ -38,7 +38,7 @@ Template Cookiecutter pour projets Python simples (sans Nix) avec : packaging Fl
 - MkDocs = docs statiques (aucune config avancée ici, base extensible).
 
 ## Exemples de commandes utiles
-- Init env : `just devenv` (ou manuel: `python -m venv .venv && source .venv/bin/activate && pip install -e .[dev,typing,tests,docs]`)
+- Init env : `just devenv` (ou manuel: `uv venv .venv && source .venv/bin/activate && uv pip install -e .[dev,typing,tests,docs,security]`). Alternative pip: `python -m venv .venv && source .venv/bin/activate && pip install -e .[dev,typing,tests,docs,security]`.
 - Tests : `pytest -q` / `tox -e tests`
 - Couverture détaillée : `pytest --cov={{cookiecutter.project_slug}} --cov-report=term-missing`
 - Lint : `pre-commit run ruff --all-files`
@@ -57,4 +57,4 @@ Template Cookiecutter pour projets Python simples (sans Nix) avec : packaging Fl
 
 ---
 
-Adaptez les suggestions aux conventions établies (dependency-groups, tox-pdm, pre-commit). En cas de nouvelle dépendance, décider si elle va dans `dependencies` (runtime) ou un groupe (`dev`/`typing`/`tests`/`docs`). Garder cohérence Ruff/mypy. Signaler toute régression de couverture (<80%).
+Adaptez les suggestions aux conventions établies (dependency-groups, tox-uv, pre-commit). En cas de nouvelle dépendance, décider si elle va dans `dependencies` (runtime) ou un groupe (`dev`/`typing`/`tests`/`docs`). Garder cohérence Ruff/mypy. Signaler toute régression de couverture (<80%).
