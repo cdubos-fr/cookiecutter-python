@@ -58,3 +58,5 @@ Template Cookiecutter pour projets Python simples (sans Nix) avec : packaging Fl
 ---
 
 Adaptez les suggestions aux conventions établies (dependency-groups, tox-uv, pre-commit). En cas de nouvelle dépendance, décider si elle va dans `dependencies` (runtime) ou un groupe (`dev`/`typing`/`tests`/`docs`). Garder cohérence Ruff/mypy. Signaler toute régression de couverture (<80%).
+
+Note commits: suivez Conventional Commits (feat, fix, chore, ci, docs, refactor, test, build, etc.). Commitizen est configuré pour guider la rédaction et la gestion de version (`cz bump`).
