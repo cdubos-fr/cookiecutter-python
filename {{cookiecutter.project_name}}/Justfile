@@ -5,7 +5,7 @@ default:
 
 devenv:
     @echo "Setting up development environment with tox-uv (.venv)"
-    @tox --devenv .venv -e devenv
+    @tox devenv -e devenv .venv
     @source .venv/bin/activate; pre-commit install || true
     @echo "✓ Development environment ready"
 
