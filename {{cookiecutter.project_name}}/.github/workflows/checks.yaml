@@ -6,63 +6,57 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions: {}
+
 concurrency:
   group: {% raw %}ci-${{ github.ref }}-${{ github.workflow }}{% endraw %}
   cancel-in-progress: true
 
 jobs:
-  tox:
+  checks:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        python-version: ["{{ cookiecutter.python_version }}"]
-    steps:{% raw %}
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version:${{ matrix.python-version }}
-          cache: pip
-          cache-dependency-path: pyproject.toml
-      - name: Setup uv
-        uses: astral-sh/setup-uv@v1
-      - name: Cache uv
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/uv
-          key: ${{ runner.os }}-uv-${{ matrix.python-version }}-${{ hashFiles('**/pyproject.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-uv-${{ matrix.python-version }}-
-            ${{ runner.os }}-uv-
-      - name: Cache tox env
-        uses: actions/cache@v4
-        with:
-          path: .tox
-          key: ${{ runner.os }}-tox-${{ matrix.python-version }}-${{ hashFiles('**/pyproject.toml','**/tox.ini') }}
-          restore-keys: |
-            ${{ runner.os }}-tox-${{ matrix.python-version }}-
-            ${{ runner.os }}-tox-
-      - run: pip install tox tox-uv tox-gh
-      - name: Run tox via tox-gh
-        run: tox --skip-env "build" --parallel
-{% endraw %}
-  build:
-    runs-on: ubuntu-latest
-    needs: tox
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
         with:
           python-version: "{{ cookiecutter.python_version }}"
-          cache: pip
-          cache-dependency-path: pyproject.toml
       - name: Setup uv
-        uses: astral-sh/setup-uv@v1
-      - run: pip install tox tox-uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b
+        with:
+          enable-cache: true # zizmor: ignore[cache-poisoning]
+          cache-dependency-glob: |
+            pyproject.toml
+            uv.lock
+            tox.ini
+      - run: uv sync --no-dev --group dx && uv pip install tox-gh
+      - name: Run hooks
+        run: prek run trailing-whitespace end-of-file-fixer \
+          check-yaml check-toml debug-statements \
+          check-merge-conflict  mixed-line-ending
+      - name: Run tox via tox-gh
+        run: tox --skip-env "build" --parallel
+  build:
+    runs-on: ubuntu-latest
+    needs: checks
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
+        with:
+          python-version: "{{ cookiecutter.python_version }}"
+      - name: Setup uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b
+        with:
+          enable-cache: false
       - name: Build sdist & wheel (tox)
-        run: tox -e build
+        run: uv build
       - name: Store artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: dist
           path: dist/

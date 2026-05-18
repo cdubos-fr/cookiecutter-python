@@ -11,18 +11,68 @@ repos:
       - id: debug-statements
       - id: check-merge-conflict
       - id: mixed-line-ending
-      - id: requirements-txt-fixer
 
-  - repo: https://github.com/bwhmather/ssort
-    rev: 0.15.0
+  - repo: local
     hooks:
-      - id: ssort
+      - id: local-ssort
+        name: ssort
+        entry: uv run ssort
+        language: system
+        types: [python]
 
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.13.0
-    hooks:
-      - id: ruff
-      - id: ruff-format
+      - id: local-ruff-check
+        name: ruff check
+        entry: uv run ruff check --force-exclude --fix --exit-non-zero-on-fix
+        language: system
+        types: [python]
+
+      - id: local-ruff-format
+        name: ruff format
+        entry: uv run ruff format --force-exclude --exit-non-zero-on-fix
+        language: system
+        types: [python]
+
+      - id: local-ssort
+        name: ssort
+        entry: uv run ssort
+        language: system
+        types: [python]
+
+      - id: local-mypy
+        name: mypy check
+        entry: uv run mypy
+        require_serial: true
+        language: system
+        types: [python]
+
+      - id: local-ty
+        name: ty check
+        entry: uv run ty check
+        require_serial: true
+        language: system
+        types: [python]
+
+      - id: local-zizmor
+        name: zizmor
+        entry: uv run zizmor
+        language: system
+        files: ^\.github\/workflows\/.*\.yaml
+        require_serial: true
+        types: [yaml]
+
+      - id: local-audit
+        name: audit
+        entry: uv audit --preview-features audit
+        language: system
+        pass_filenames: false
+
+      - id: local-bandit
+        name: bandit
+        entry: uv run bandit
+        language: system
+        exclude: ^tests\/.*\.py
+        require_serial: true
+        types: [python]
 
   - repo: https://github.com/commitizen-tools/commitizen
     rev: v4.9.1

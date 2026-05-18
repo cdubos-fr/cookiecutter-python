@@ -15,45 +15,30 @@ jobs:
       contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           fetch-depth: 0
           token: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+          persist-credentials: false
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
         with:
           python-version: "{{ cookiecutter.python_version }}"
-          cache: pip
-          cache-dependency-path: pyproject.toml
       - name: Setup uv
-        uses: astral-sh/setup-uv@v1
-      - name: Cache uv
-        uses: actions/cache@v4
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b
         with:
-          path: ~/.cache/uv
-          key: {% raw %}${{ runner.os }}{% endraw %}-uv-{{ cookiecutter.python_version }}-{% raw %}${{ hashFiles('**/pyproject.toml') }}{% endraw %}
-          restore-keys: |{% raw %}
-            ${{ runner.os }}-uv-{{ cookiecutter.python_version }}-
-            ${{ runner.os }}-uv-{% endraw %}
-      - name: Install build tooling
-        run: pip install commitizen tox tox-uv twine
+          enable-cache: false
       - name: Version bump & changelog
-        uses: commitizen-tools/commitizen-action@0.21.0
-        with:{% raw %}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          changelog_increment_filename: body.md{% endraw %}
-      - name: Build sdist & wheel (tox)
-        run: tox -e build
+        uses: commitizen-tools/commitizen-action@338bbd841b75aaee6bf5340e1fa12f6ab58ff9ff
+        with:
+          github_token: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+          changelog_increment_filename: body.md
+      - name: Build sdist & wheel
+        run: uv build
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: dist
           path: dist/
-{% raw %}      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          body_path: body.md
-          tag_name: ${{ env.REVISION }}
-          files: dist/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}{% endraw %}
+      - name: Create Github Release
+        run: gh release create --notes-files body.md --title {% raw %}${REVISION}{% endraw %} dist/*

@@ -20,4 +20,4 @@ if __name__ == "__main__":
     else:
         clear_file_module()
     os.system(f"git init {CURRENT_PATH}")
-    os.system(f"git add {CURRENT_PATH}/*")
+    os.system(f"cd {CURRENT_PATH} && git add .")

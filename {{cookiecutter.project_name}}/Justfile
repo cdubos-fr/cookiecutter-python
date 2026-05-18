@@ -3,38 +3,50 @@ set shell := ["zsh", "-uc"]
 default:
     @just --list
 
+# Build virtual environment for development
 devenv:
-    @echo "Setting up development environment with tox-uv (.venv)"
-    @tox devenv -e devenv .venv
-    @source .venv/bin/activate; pre-commit install || true
+    @echo "Setting up development environment uv"
+    @uv venv --allow-existing .venv
+    @uv sync
+    @source .venv/bin/activate; prek install || true
     @echo "✓ Development environment ready"
 
 # Run all checks
-check:
-    @tox
+checks:
+    @echo "Running dedicated hooks"
+    -@uv run prek run trailing-whitespace end-of-file-fixer \
+    check-yaml check-toml debug-statements \
+    check-merge-conflict  mixed-line-ending
+    @echo "Running Tox checks"
+    @tox -q
 
 # Run tests
 test:
-    @tox -e tests
+    @tox -e test -q
 
 # Run type checking
-typecheck:
-    @tox -e typing
+types:
+    @tox -e types -q
 
-# Format code
+# Run formatters
 format:
-    @pre-commit run ruff-format --all-files
+    @uv run ruff format
+    @uv run ssort
+    @uv run zizmor --fix=all
 
-# Lint code
+# Run linters
 lint:
-    @pre-commit run ruff --all-files
+    @tox -e lint -q
 
+# Build the documentation
 docs:
-    @tox -e docs
+    @uv run zensical build
 
-serve-docs:
-    @mkdocs serve
+# Serve the docs
+docs-serve:
+    @uv run zensical serve
 
+# Clear cache and temporary files
 clean:
     @find . -type d -name .venv -exec rm -rf {} +
     @find . -type d -name __pycache__ -exec rm -rf {} +
@@ -49,17 +61,10 @@ clean:
     @find . -type f -name .coverage -exec rm -rf {} +
     @find . -type d -name result -exec rm -rf {} +
 
+# Build package
 build:
-    @tox -e build
+    @uv build
 
-update-deps:
-    @echo "Recreating dev environment with tox-uv (fresh deps)"
-    @tox --recreate devenv -e devenv .venv
-
-sync:
-    @echo "Syncing dev environment with tox-uv"
-    @tox devenv -e devenv .venv
-
-release version:
-    @cz bump
-    @just build
+# Bump version
+release-version:
+    @uv run cz bump
