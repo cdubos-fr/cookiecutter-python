@@ -1,17 +1,9 @@
-# Welcome to MkDocs
+# Welcome to {{cookiecutter.project_name}}
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+This is the first documentation page for your {{cookiecutter.project_name}} project.
 
-## Commands
+To run it:
+`zensical serve`
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
-
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+To build it:
+`zensical build`

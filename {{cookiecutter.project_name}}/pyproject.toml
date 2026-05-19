@@ -9,32 +9,45 @@ version = "{{cookiecutter.version}}"
 authors = [{name = "{{cookiecutter.full_name}}", email = "{{cookiecutter.email}}"}]
 readme = "README.md"
 requires-python = ">= {{cookiecutter.python_version}}"
+classifiers = [
+    "Programming Language :: Python :: {{cookiecutter.python_version}}",
+]
 dependencies = []
 
 [dependency-groups]
 dev = [
-    "ruff>=0.6.0",
-    "pre-commit>=3.6.0",
+    { include-group = "dx" },
+    { include-group = "docs" },
+    { include-group = "lint" },
+    { include-group = "typing" },
+    { include-group = "tests" },
+    { include-group = "security" },
+]
+docs = [
+    "zensical>=0.0.42",
+]
+dx = [
+    "prek>=0.4.0",
     "commitizen>=3.21.0",
-    "build>=1.2.1",
     "tox>=4.31.0",
+]
+lint = [
+    "ruff>=0.0.241",
+    "ssort>=0.15.0",
+    "zizmor >=1.23.1",
+]
+security = [
+    "bandit>=1.7.9",
 ]
 typing = [
     "mypy>=1.10.0",
     "types-setuptools",
+    "ty>=0.0.25",
 ]
 tests = [
     "pytest>=8.2.0",
     "pytest-cov>=5.0.0",
     "pytest-lazy-fixture>=0.6.0",
-]
-docs = [
-    "mkdocs>=1.5.0",
-    "mkdocs-material>=9.5.0",
-]
-security = [
-    "bandit>=1.7.9",
-    "safety>=3.2.0",
 ]
 
 [tool.flit.module]
@@ -59,6 +72,9 @@ disallow_incomplete_defs = true
 check_untyped_defs = true
 warn_unused_ignores = true
 no_implicit_reexport = true
+
+[tool.ty.terminal]
+error-on-warning = true
 
 [tool.ruff]
 fix = true
